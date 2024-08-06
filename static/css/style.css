@@ -1,0 +1,92 @@
+/* navbar */
+
+.navbar {
+    background-color: #CD212A;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo {
+    height: 5rem;
+    border-radius: 50%;
+    margin-left: 1rem;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+.navbar-brand {
+    color: white;
+    font-size: clamp(1.5rem, 1.75rem, 2rem);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-left: 1rem;
+}
+
+.navbar-brand:hover {
+    color: white;
+}
+
+.nav-link {
+    color: white;
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+}
+
+/* Footer */
+
+.footer-container {
+    background-color: #CD212A;
+    color: white;
+}
+
+.footer-icon-container {
+    padding: 0.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.footer-icon i {
+    color: white;
+}
+
+.footer-icon i:hover {
+    color: white;
+    transform: scale(1.1);
+}
+
+.footer-details {
+    text-align: center;
+    padding: 0.5rem 2rem;
+}
+
+.footer-details p {
+    font-size: 0.75rem;
+}
+
+.footer-copyright {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 2rem;
+}
