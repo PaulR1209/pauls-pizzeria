@@ -1,5 +1,36 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="home-container">
+        <div class="row">
+            <div class="col-12 col-lg-6 home-details-container home-details-container-left">
+                <h1>Paul's Pizzeria</h1>
+                <p>Welcome to Paul’s Pizzeria, Warwick’s newest culinary gem. Our cozy Italian eatery specializes in
+                    mouthwatering pizzas, delightful pasta dishes, and fresh salads. From the classic Margherita pizza
+                    to creamy fettuccine Alfredo, every bite transports you to the heart of Italy. Buon appetito!.</p>
+                <img class="d-none d-lg-block" src="{% static 'images/pizzeria.png' %}" alt="">
+                <a href="" class="btn btn-primary text-uppercase d-md-none home-btn">Menu</a>
+                <a href="" class="btn btn-primary text-uppercase d-md-none home-btn">Book</a>
+                <p class="d-md-none"><i class="fa-solid fa-phone"></i> 01234 567890</p>
+            </div>
+            <div class="col-12 col-lg-6 home-details-container opening-times d-none d-md-block">
+                <h1>Opening Times:</h1>
+                <p>Monday - Closed</p>
+                <p>Tuesday - Closed</p>
+                <p>Wednesday - 12:00 - 22:00</p>
+                <p>Thursday - 12:00 - 22:00</p>
+                <p>Friday - 12:00 - 22:00</p>
+                <p>Saturday - 12:00 - 22:00</p>
+                <p>Sunday - 12:00 - 22:00</p>
+                <a href="" class="btn btn-primary text-uppercase home-btn">Menu</a>
+                <a href="" class="btn btn-primary text-uppercase home-btn">Book</a>
+                <p><i class="fa-solid fa-phone"></i> 01234 567890</p>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}
