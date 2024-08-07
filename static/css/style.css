@@ -167,7 +167,7 @@ footer {
     margin: 1rem 0;
 }
 
-.food-container p {
+.food-container p, .drinks-container p {
     font-style: italic;
     font-size: 0.75rem;
 }
@@ -179,6 +179,10 @@ footer {
 
 .price-container {
     padding: 0;
+}
+
+.drinks-container p {
+    text-align: center;
 }
 
 /* Media queries */
