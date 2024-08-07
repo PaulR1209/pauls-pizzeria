@@ -44,6 +44,18 @@
     text-underline-offset: 0.5rem;
 }
 
+.btn-light {
+    background-color: white;
+    color: #CD212A;
+}
+
+.btn-light:hover {
+    background-color: white;
+    color: #CD212A;
+    text-decoration: none;
+    transform: scale(1.1);
+}
+
 /* Footer */
 
 .footer-container {
@@ -84,6 +96,7 @@
 
 .footer-details p {
     font-size: 0.75rem;
+    margin-bottom: 0;
 }
 
 .footer-copyright {
