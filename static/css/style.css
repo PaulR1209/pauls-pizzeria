@@ -145,6 +145,10 @@ footer {
     margin-bottom: 0;
 }
 
+.address {
+    margin-top: 1rem;
+}
+
 .home-btn {
     margin-top: 1rem;
     margin-bottom: 0.5rem;
@@ -204,9 +208,4 @@ footer {
         width: 70%;
         height: auto;
     }
-
-    .opening-times h1 {
-        margin-top: 3rem;
-    }
-    
 }
