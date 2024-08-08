@@ -204,6 +204,11 @@ footer {
     margin: 0 auto;
 }
 
+.alert-success {
+    text-align: center;
+    width: 35%;
+}
+
 /* Media queries */
 
 @media screen and (min-width: 768px) {

@@ -4,6 +4,9 @@
 
 <div class="container">
     <div class="home-container">
+        {% if success_message %}
+            <div class="alert alert-success">{{ success_message }}</div>
+        {% endif %}
         <div class="row">
             <div class="col-12 col-lg-6 home-details-container home-details-container-left">
                 <h1>Paul's Pizzeria</h1>

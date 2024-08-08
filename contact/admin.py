@@ -2,5 +2,8 @@ from django.contrib import admin
 from .models import Contact
 from django_summernote.admin import SummernoteModelAdmin
 
-# Register your models here.
-admin.site.register(Contact)
+@admin.register(Contact)
+class PostAdmin(SummernoteModelAdmin):
+
+    list_display = ('name', 'subject', 'created_on')
+    search_fields = ['name', 'subject', 'created_on']
