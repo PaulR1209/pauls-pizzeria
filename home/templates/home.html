@@ -11,6 +11,7 @@
                     mouthwatering pizzas, delightful pasta dishes, and fresh salads. From the classic Margherita pizza
                     to creamy fettuccine Alfredo, every bite transports you to the heart of Italy. Buon appetito!.</p>
                 <img class="d-none d-lg-block" src="{% static 'images/pizzeria.png' %}" alt="">
+                <p class="address d-block d-md-none"><i class="fa-solid fa-location-dot"></i> 39 High Street, <br>Warwick, <br>CV34 3AX</p>
                 <a href="" class="btn btn-primary text-uppercase d-md-none home-btn">Menu</a>
                 <a href="" class="btn btn-primary text-uppercase d-md-none home-btn">Book</a>
                 <p class="d-md-none"><i class="fa-solid fa-phone"></i> 01234 567890</p>
@@ -25,8 +26,8 @@
                 <p>Saturday - 12:00 - 22:00</p>
                 <p>Sunday - 12:00 - 22:00</p>
                 <p class="address"><i class="fa-solid fa-location-dot"></i> 39 High Street, <br>Warwick, <br>CV34 3AX</p>
-                <a href="" class="btn btn-primary text-uppercase home-btn">Menu</a>
-                <a href="" class="btn btn-primary text-uppercase home-btn">Book</a>
+                <a href="{% url 'menu' %}" class="btn btn-primary text-uppercase home-btn">Menu</a>
+                <a href="{% url 'booking' %}" class="btn btn-primary text-uppercase home-btn">Book</a>
                 <p><i class="fa-solid fa-phone"></i> 01234 567890</p>
 
             </div>
