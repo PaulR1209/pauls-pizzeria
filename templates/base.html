@@ -2,6 +2,9 @@
 
 {% url 'contact' as contact_url %}
 {% url 'booking' as booking_url %}
+{% url 'account_login' as login_url %}
+{% url 'account_signup' as signup_url %}
+{% url 'account_logout' as logout_url %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +37,8 @@
     <header>
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid justify-content-between">
-                <a href="{% url 'home' %}"><img class="logo d-none d-md-block" src="{% static 'images/logo.png' %}" alt=""></a>
+                <a href="{% url 'home' %}"><img class="logo d-none d-md-block" src="{% static 'images/logo.png' %}"
+                        alt=""></a>
                 <a class="navbar-brand" href="{% url 'home' %}">Paul's Pizzeria</a>
                 <button class="navbar-toggler p-1 p-sm-2 collapsed" type="button" data-toggle="collapse"
                     data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -46,6 +50,7 @@
                         <div class="row w-100 d-none d-lg-flex">
                             <div class="col-lg-8 d-flex justify-content-center">
                                 <ul class="navbar-nav">
+                                    {% if user.is_authenticated %}
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'home' %}">Home</a>
                                     </li>
@@ -58,13 +63,38 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'booking' %}">Book Now</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">My Bookings</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'booking' %}">Book Now</a>
+                                    </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                             <div class="col-lg-4 d-flex justify-content-end">
                                 <ul class="navbar-nav">
+                                    {% if user.is_authenticated %}
                                     <li class="nav-item">
-                                        <button type="button" class=" btn btn-light nav-link" href="#">Login</button>
+                                        <a class="btn btn-light nav-link {% if request.path == logout_url %}active{% endif %}"
+                                            aria-current="page" href="{% url 'account_logout' %}">Logout</a>
                                     </li>
+                                    {% else %}
+                                    <li class="nav-item">
+                                        <a class="btn btn-light nav-link {% if request.path == login_url %}active{% endif %}"
+                                            aria-current="page" href="{% url 'account_login' %}">Login</a>
+                                    </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
@@ -113,13 +143,16 @@
                 <div
                     class="col-12 col-md-6 col-lg-4 justify-content-md-end justify-content-lg-center footer-icon-container">
                     <div class="footer-icon mx-1">
-                        <a href="https://github.com/PaulR1209" target="_blank"><i class="fa-brands fa-github fa-2x"></i></a>
+                        <a href="https://github.com/PaulR1209" target="_blank"><i
+                                class="fa-brands fa-github fa-2x"></i></a>
                     </div>
                     <div class="footer-icon mx-1">
-                        <a href="https://www.linkedin.com/in/paul-russell-7a9404282/" target="_blank"><i class="fa-brands fa-linkedin fa-2x"></i></a>
+                        <a href="https://www.linkedin.com/in/paul-russell-7a9404282/" target="_blank"><i
+                                class="fa-brands fa-linkedin fa-2x"></i></a>
                     </div>
                     <div class="footer-icon mx-1">
-                        <a href="mailto:paulr711@gmail.com" target="_blank"><i class="fa-solid fa-envelope fa-2x"></i></a>
+                        <a href="mailto:paulr711@gmail.com" target="_blank"><i
+                                class="fa-solid fa-envelope fa-2x"></i></a>
                     </div>
                 </div>
                 <div class="col-12 col-md-12 col-lg-4 align-items-lg-end justify-content-lg-end footer-copyright">

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div class="container menu-container sign-up-container">
+  <div class="row">
+    <div class="">
+      <h3 class="menu-title">{% trans "Sign Up" %}</h3>
+
+      <p class="text-center">{% blocktrans %}
+        Do you already have an account? Then please
+        <a class="link" href="{{ login_url }}">sign in</a>
+        instead.
+        {% endblocktrans %}
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="">
+      <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <div class="center-container">
+          <button class="btn btn-primary home-btn sign-in-btn" type="submit">{% trans "Sign Up" %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
