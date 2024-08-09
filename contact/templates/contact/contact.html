@@ -3,17 +3,17 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-<div class="form-container-position d-flex justify-content-center">
-    <div class="form-container">
+<div class="row d-flex justify-content-center">
+    <div class="col-md-7 col-lg-6 col-xl-5 container p-4 p-md-5 mb-3">
  
-        <h1 class="menu-title">Contact Us</h1>
-        <p class="menu-text">Fill out the form below to inquire about booking the restaurant for your
+        <h1 class="menu-title mb-6">Contact Us</h1>
+        <p class="form-text">Fill out the form below to inquire about booking the restaurant for your
             special event or reserving large tables for parties of over 8 people.</p>
 
         <form method="post" id="{{ form.helper.form_id }}">
             {% csrf_token %}
             {{ form|crispy }}
-            <button type="submit" class="btn btn-primary home-btn">Submit</button>
+            <button type="submit" class="btn btn-primary home-btn d-block mx-auto">Submit</button>
         </form>
     </div>
 </div>
