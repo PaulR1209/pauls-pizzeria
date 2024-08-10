@@ -11,10 +11,34 @@ body {
     background-attachment: fixed;
 }
 
+/* Drop down menu */
+
+.navbar-nav {
+    position: relative;
+}
+
+.drop-down-menu { 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    padding: 2rem;
+    background-color: #CD212A;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.drop-down-menu a {
+   font-size: 1.25rem;
+   border-bottom: 2px solid white;
+   padding: 0.5rem 0 0.5rem 0;
+}
+
 /* navbar */
 
 .navbar {
     background-color: #CD212A;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -105,7 +129,7 @@ body {
 /* Home */
 
 .container {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .home-details-container {
