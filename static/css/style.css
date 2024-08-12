@@ -83,6 +83,12 @@ body {
     transform: scale(1.1);
 }
 
+.login-text p {
+    color: white;
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
 /* Footer */
 
 .footer-container {
@@ -130,6 +136,7 @@ body {
 
 .container {
     background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
 }
 
 .home-details-container {
@@ -144,6 +151,7 @@ body {
 .home-details-container img {
     width: 70%;
     height: auto;
+    border-radius: 15px;
 }
 
 .opening-times p {
