@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from .forms import BookingForm
-from datetime import datetime
 
 
 # Create your views here.

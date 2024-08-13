@@ -34,6 +34,6 @@ class BookingForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'placeholder': 'Enter your full name'}),
             'email': forms.EmailInput(attrs={'placeholder': 'example@example.com'}),
             'phone': forms.TextInput(attrs={'placeholder': '+44 123 456 7890'}),
-            'date': forms.DateInput(attrs={'type': 'date', 'value' : timezone.now().date()}),
+            'date': forms.DateInput(attrs={'type': 'date', 'value' : timezone.now().date(), 'min': timezone.now().date()}),
             'time': forms.Select(choices=get_available_time_slots())
         }
