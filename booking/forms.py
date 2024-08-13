@@ -23,11 +23,24 @@ def get_available_time_slots():
 class BookingForm(forms.ModelForm):
 
     def clean_time(self):
+        chosen_date = self.cleaned_data.get('date')
         chosen_time = self.cleaned_data.get('time')
-        current_time = timezone.now().astimezone(pytz.timezone('Europe/London')).time()
-        if chosen_time < current_time:
-            raise forms.ValidationError("Please select a future time.")
-        return chosen_time
+        if chosen_date and chosen_time:
+            combined_datetime = datetime.combine(chosen_date, chosen_time)
+            current_datetime = datetime.now()
+            time_difference = combined_datetime - current_datetime
+            if time_difference.total_seconds() < 0:
+                raise forms.ValidationError("Please select a future time.")
+            return chosen_time
+
+    def clean_date(self):
+        chosen_date = self.cleaned_data.get('date')
+        if chosen_date:
+            # Get the day of the week (0 = Monday, 1 = Tuesday, ..., 6 = Sunday)
+            day_of_week = chosen_date.weekday()
+            if day_of_week in [0, 1]:  # Monday or Tuesday
+                raise forms.ValidationError("We're closed on Mondays and Tuesdays.")
+        return chosen_date
 
     class Meta:
         model = BookingForm
