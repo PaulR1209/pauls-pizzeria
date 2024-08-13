@@ -38,5 +38,5 @@ class BookingForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'placeholder': '+44 123 456 7890'}),
             'date': forms.DateInput(attrs={'type': 'date', 'value' : timezone.now().date(), 'min': timezone.now().date()}),
             'time': forms.Select(choices=get_available_time_slots()),
-            'guests': forms.NumberInput(attrs={'placeholder': 'For tables above 8, fill in "Contact Us" form', 'min': 1, 'max': 8})
+            'guests': forms.NumberInput(attrs={'placeholder': 'Max. Guests: 8', 'min': 1, 'max': 8})
         }

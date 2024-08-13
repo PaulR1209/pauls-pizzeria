@@ -9,6 +9,8 @@
         <h1 class="menu-title mb-6">Book a Table</h1>
         <p class="form-text">Please fill out this booking form to book a table with us. Once booked, you will be able to
             view your booking in the 'My Bookings' tab.</p>
+        <p class="form-text">Please contact us <a
+            class="link" href="{{ contact_url }}"> here</a> for bookings over 8 guests.</p>
 
         <form method="post" id="{{ form.helper.form_id }}">
             {% csrf_token %}
