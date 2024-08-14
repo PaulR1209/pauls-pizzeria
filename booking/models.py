@@ -24,3 +24,15 @@ class Table(models.Model):
     
     def __str__(self):
         return f"Table {self.table_number}"
+
+
+class BookingAssignment(models.Model):
+    name = models.ForeignKey(BookingForm, on_delete=models.CASCADE, related_name='booking_name')
+    date = models.ForeignKey(BookingForm, on_delete=models.CASCADE, related_name='booking_date')
+    time = models.ForeignKey(BookingForm, on_delete=models.CASCADE, related_name='booking_time')
+    guests = models.ForeignKey(BookingForm, on_delete=models.CASCADE, related_name='booking_guests')
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
+    assigned_on = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.booking.name} - {self.table.table_number}"
