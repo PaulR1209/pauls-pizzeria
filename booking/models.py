@@ -14,3 +14,13 @@ class BookingForm(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Table(models.Model):
+    table_number = models.IntegerField(unique=True)
+    table_capacity = models.IntegerField()
+    is_reserved = models.BooleanField(default=False)
+    reserved_by = models.ForeignKey(BookingForm, on_delete=models.CASCADE, null=True, blank=True)
+    
+    def __str__(self):
+        return f"Table {self.table_number}"
