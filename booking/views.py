@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.utils import timezone
 from .models import BookingForm, Table, BookingAssignment
 from .forms import BookingForm
 
@@ -10,8 +11,12 @@ def booking(request):
             booking = form.save()
             
             # Find an available table
-            available_table = Table.objects.filter(is_reserved=False, table_capacity__gte=booking.guests).first()
-            
+            available_table = Table.objects.filter(
+                is_reserved=False,
+                table_capacity__gte=booking.guests,
+                bookingassignment__end_time__lte=timezone.now()
+            ).first()
+
             if available_table:
                 # Reserve the table
                 available_table.is_reserved = True
@@ -19,7 +24,11 @@ def booking(request):
                 available_table.save()
                 
                 # Create a booking assignment
-                BookingAssignment.objects.create(booking=booking, table=available_table)
+                BookingAssignment.objects.create(
+                    booking=booking,
+                    table=available_table,
+                    end_time=booking.end_time
+                )
                 
                 return HttpResponse("Booking successful! Table assigned.")
             else:
