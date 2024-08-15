@@ -1,39 +1,26 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.utils import timezone
-from .models import BookingForm, Table, BookingAssignment
-from .forms import BookingForm
+from django.shortcuts import render
+from .forms import BookingForm, get_available_time_slots
+from .models import BookingAssignment, Table
+
 
 def booking(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
             booking = form.save()
-            
-            # Find an available table
-            available_table = Table.objects.filter(
-                is_reserved=False,
-                table_capacity__gte=booking.guests,
-                bookingassignment__end_time__lte=timezone.now()
-            ).first()
-
-            if available_table:
-                # Reserve the table
-                available_table.is_reserved = True
-                available_table.reserved_by = booking
-                available_table.save()
-                
-                # Create a booking assignment
-                BookingAssignment.objects.create(
-                    booking=booking,
-                    table=available_table,
-                    end_time=booking.end_time
-                )
-                
-                return HttpResponse("Booking successful! Table assigned.")
+            table = Table.objects.filter(is_reserved=False, table_capacity__gte=booking.guests).first()
+            if table:
+                end_time = booking.end_time
+                booking_assignment = BookingAssignment(booking=booking, table=table)
+                booking_assignment.save()
+                table.is_reserved = True
+                table.reserved_by = booking
+                table.save()
+                success_message = 'Thank you for booking with us! We look forward to seeing you!'
+                return render(request, 'home.html', {'success_message': success_message})
             else:
-                return HttpResponse("No available tables for the selected time.")
+                form.add_error(None, "Sorry, we are fully booked at that time. Please try another time.")
     else:
         form = BookingForm()
-    print('Rendering booking form')
-    return render(request, 'booking/booking.html', {'form': form})
+
+    return render(request, 'booking/booking.html', {'form': form, 'time_slots': get_available_time_slots()})

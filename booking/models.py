@@ -37,7 +37,6 @@ class Table(models.Model):
 class BookingAssignment(models.Model):
     booking = models.OneToOneField(BookingForm, on_delete=models.CASCADE)
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
-    end_time = models.TimeField()
     assigned_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
