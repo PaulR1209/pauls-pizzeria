@@ -12,7 +12,7 @@ def get_available_time_slots():
     current_time = start_time
     
     while current_time <= end_time:
-        time_slots.append((current_time.strftime('%H:%M'), current_time.strftime('%H:%M')))
+        time_slots.append((current_time, current_time.strftime('%H:%M')))
         current_time = (datetime.combine(datetime.today(), current_time) + timedelta(minutes=30)).time()
 
     return time_slots
@@ -25,17 +25,21 @@ class BookingForm(forms.ModelForm):
         chosen_time = self.cleaned_data.get('time')
 
         if not chosen_date:
-            raise forms.ValidationError("This time slot is unavailable.")        
+            raise forms.ValidationError("This time slot is unavailable.")
         
         combined_datetime = datetime.combine(chosen_date, chosen_time)
         current_datetime = datetime.now()
-        time_difference = combined_datetime - current_datetime
+        time_difference = combined_datetime - current_datetime        
+        
         if time_difference.total_seconds() < 0:
             raise forms.ValidationError("Please select a future time.")
         return chosen_time
 
     def clean_date(self):
         chosen_date = self.cleaned_data.get('date')
+
+        if not chosen_date:
+            raise forms.ValidationError("Date must be selected.")
 
         # Get the day of the week (0 = Monday, 1 = Tuesday, ..., 6 = Sunday)
         day_of_week = chosen_date.weekday()

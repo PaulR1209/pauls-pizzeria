@@ -19,8 +19,8 @@ class PostAdmin(SummernoteModelAdmin):
 
 
 @admin.register(BookingAssignment)
-class PostAdmin(SummernoteModelAdmin):
-
-    list_display = ('name', 'date', 'time', 'guests', 'table', 'assigned_on')
-    list_filter = ('date', 'time')
-    search_fields = ['name', 'date', 'time', 'table', 'assigned_on']
+class BookingAssignmentAdmin(SummernoteModelAdmin):
+    
+    list_display = ('booking', 'table', 'assigned_on')
+    list_filter = ('assigned_on',)
+    search_fields = ['booking__name', 'table__table_number']
