@@ -27,14 +27,12 @@ class BookingForm(models.Model):
 class Table(models.Model):
     table_number = models.IntegerField(unique=True)
     table_capacity = models.IntegerField()
-    is_reserved = models.BooleanField(default=False)
-    reserved_by = models.ForeignKey(BookingForm, on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
         return f"Table {self.table_number}"
+    
 
-
-class BookingAssignment(models.Model):
+class Reservation(models.Model):
     booking = models.OneToOneField(BookingForm, on_delete=models.CASCADE)
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     assigned_on = models.DateTimeField(auto_now_add=True)
