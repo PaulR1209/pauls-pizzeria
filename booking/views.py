@@ -38,5 +38,6 @@ def booking(request):
     return render(request, 'booking/booking.html', {'form': form, 'time_slots': get_available_time_slots()})
 
 
-def mybookings(request):
-    return render(request, 'booking/mybookings.html')
+def reservations(request):
+    reservations = Reservation.objects.all()
+    return render(request, 'booking/reservations.html', {'reservations': reservations})

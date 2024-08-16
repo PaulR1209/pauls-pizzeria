@@ -4,5 +4,5 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('', login_required(views.booking), name='booking'),
-    path('mybookings/', login_required(views.mybookings), name='mybookings')
+    path('reservations/', login_required(views.reservations), name='reservations'),
 ]
