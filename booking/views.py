@@ -36,3 +36,7 @@ def booking(request):
         form = BookingForm()
 
     return render(request, 'booking/booking.html', {'form': form, 'time_slots': get_available_time_slots()})
+
+
+def mybookings(request):
+    return render(request, 'booking/mybookings.html')
