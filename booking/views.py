@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookingForm, get_available_time_slots
 from .models import Reservation, Table
+from django.utils import timezone
 
 
 def booking(request):
@@ -39,5 +40,25 @@ def booking(request):
 
 
 def reservations(request):
-    reservations = Reservation.objects.all()
-    return render(request, 'booking/reservations.html', {'reservations': reservations})
+    now = timezone.now()
+    reservations = Reservation.objects.filter(
+        booking__date__gte=now.date(),
+    ).order_by("booking__date", "booking__time")
+
+    return render(request, "booking/reservations.html", {"reservations": reservations})
+
+
+def edit_reservation(request, reservation_id):
+    
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+
+    if request.method == "POST":
+        form = BookingForm(request.POST, instance=reservation.booking)
+        if form.is_valid():
+            form.save()
+            return redirect("reservations")
+
+    else:
+        form = BookingForm(instance=reservation.booking)
+
+    return render(request, "booking/edit_reservation.html", {"reservation": reservation, "form": form})

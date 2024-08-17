@@ -3,4 +3,34 @@
 {% block content %}
 {% load static %}
 
+<div class="row">
+    <div class="container col-11 col-md-6 col-lg-5 col-xl-4">
+        <h1 class="menu-title">My Reservations</h1>
+
+        <table class="table table-striped">
+            <thead>
+                <tr class="bookings_list">
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Guests</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                <tr class="bookings_list">
+                    <td>{{ reservation.booking.date|date:'d/m/y' }}</td>
+                    <td>{{ reservation.booking.time|time:'H:i' }}</td>
+                    <td>{{ reservation.booking.guests }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'edit_reservation' reservation.id %}" class="btn btn-primary">Edit</a>
+                        <a href="" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
 {% endblock content %}
