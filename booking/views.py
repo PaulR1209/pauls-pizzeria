@@ -46,7 +46,8 @@ def booking(request):
                     "Sorry, we are fully booked at that time. Please try another time.",
                 )
     else:
-        form = BookingForm()
+        initial_data = {'email': request.user.email, 'name': request.user.username}
+        form = BookingForm(initial=initial_data)
 
     return render(
         request,

@@ -198,6 +198,12 @@ body {
     margin-bottom: 2rem;
 }
 
+/* My Bookings */
+
+.bookings_list, .bookings_list a {
+    font-size: 0.75rem;
+}
+
 /* Sign in/Sign up forms */
 
 .sign-in-container {
@@ -211,6 +217,12 @@ body {
 }
 
 /* Media queries */
+
+@media screen and (min-width: 425px) {
+    .bookings_list, .bookings_list a {
+        font-size: 1rem;
+    }
+}
 
     @media screen and (min-width: 1200px) {
         .nav-link {

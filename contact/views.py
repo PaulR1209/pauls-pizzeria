@@ -12,6 +12,9 @@ def contact(request):
             success_message = "Thank you for contacting us! We will be in touch shortly."
             return render(request, 'home.html', {'success_message': success_message})
     else:
-        form = Contact(initial={'email': request.user.email})
+        if request.user.is_authenticated:
+            form = Contact(initial={'email': request.user.email, 'name': request.user.username})
+        else:
+            form = Contact()
 
     return render(request, 'contact/contact.html', {'form': form})
