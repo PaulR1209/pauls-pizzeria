@@ -25,7 +25,8 @@ def booking(request):
                     booking__time__lt=end_time,
                     booking__end_time__gt=start_time,
                 )
-                # Check if there are no overlapping reservations and if the table has enough capacity
+                # Check if there are no overlapping reservations and
+                # if the table has enough capacity
                 if (
                     not overlapping_reservations.exists()
                     and table.table_capacity >= booking.guests
@@ -34,10 +35,12 @@ def booking(request):
                     break
             # If there is an available table, assign the booking to the table
             if available_table:
-                booking_assignment = Reservation(booking=booking, table=available_table)
+                booking_assignment = Reservation(
+                    booking=booking, table=available_table)
                 booking_assignment.save()
                 success_message = (
-                    "Thank you for booking with us! We look forward to seeing you!"
+                    "Thank you for booking with us!"
+                    " We look forward to seeing you!"
                 )
                 return render(
                     request, "home.html", {"success_message": success_message}
@@ -46,11 +49,14 @@ def booking(request):
             else:
                 form.add_error(
                     None,
-                    "Sorry, we are fully booked at that time. Please try another time.",
+                    "Sorry, we are fully booked at that time."
+                    " Please try another time.",
                 )
-    # If the form is not valid, render the form again with user email and name pre-filled
+    # If the form is not valid,
+    # render the form again with user email and name pre-filled
     else:
-        initial_data = {'email': request.user.email, 'name': request.user.username}
+        initial_data = {
+            'email': request.user.email, 'name': request.user.username}
         form = BookingForm(initial=initial_data)
     # Render the booking form with available time slots
     return render(
@@ -67,7 +73,8 @@ def reservations(request):
         booking__date__gte=now.date(),
     ).order_by("booking__date", "booking__time")
     # Render the reservations page with the reservations
-    return render(request, "booking/reservations.html", {"reservations": reservations})
+    return render(
+        request, "booking/reservations.html", {"reservations": reservations})
 
 
 def edit_reservation(request, reservation_id):
@@ -101,5 +108,6 @@ def cancel_reservation(request, reservation_id):
         return render(request, "home.html", {"cancel_message": cancel_message})
     # Render the cancel reservation page
     return render(
-        request, "booking/cancel_reservation.html", {"reservation": reservation}
+        request, "booking/cancel_reservation.html", {
+            "reservation": reservation}
     )

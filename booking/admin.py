@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import BookingForm, Table, Reservation
 from django_summernote.admin import SummernoteModelAdmin
 
+
 @admin.register(BookingForm)
 class PostAdmin(SummernoteModelAdmin):
 
@@ -20,14 +21,14 @@ class PostAdmin(SummernoteModelAdmin):
 
 @admin.register(Reservation)
 class ReservationAdmin(SummernoteModelAdmin):
-    
+
     list_display = ('booking', 'table', 'booking_time', 'booking_date')
     list_filter = ('assigned_on', 'booking__date')
     search_fields = ['booking__name', 'table__table_number', 'booking__date']
     ordering = ('booking__time',)
 
-    def booking_time (self, obj):
+    def booking_time(self, obj):
         return obj.booking.time
-    
-    def booking_date (self, obj):
+
+    def booking_date(self, obj):
         return obj.booking.date

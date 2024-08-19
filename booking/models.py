@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 # BookingForm model
 class BookingForm(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -25,20 +26,22 @@ class BookingForm(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 # Table model
 class Table(models.Model):
     table_number = models.IntegerField(unique=True)
     table_capacity = models.IntegerField()
-    
+
     def __str__(self):
         return f"Table {self.table_number}"
-    
+
+
 # Reservation model to assign a booking to a table
 class Reservation(models.Model):
     booking = models.OneToOneField(BookingForm, on_delete=models.CASCADE)
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     assigned_on = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         return f"{self.booking.name} - {self.table.table_number}"
