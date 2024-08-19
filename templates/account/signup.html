@@ -20,6 +20,7 @@
       </div>
     </div>
     <div class="row">
+      <!-- Signup form -->
       <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
         {{ form.as_p }}

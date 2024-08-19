@@ -12,6 +12,7 @@
         <p class="form-text">Please contact us <a
             class="link" href="{{ contact_url }}"> here</a> for bookings over 8 guests.</p>
 
+        <!-- Booking Form -->
         <form method="post" id="{{ form.helper.form_id }}">
             {% csrf_token %}
             {{ form|crispy }}

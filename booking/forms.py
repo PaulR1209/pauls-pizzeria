@@ -19,22 +19,22 @@ def get_available_time_slots():
 
 
 class BookingForm(forms.ModelForm):
-
+    # Validate the time slot selected by the user and check if it is available
     def clean_time(self):
         chosen_date = self.cleaned_data.get('date')
         chosen_time = self.cleaned_data.get('time')
 
         if not chosen_date:
             raise forms.ValidationError("This time slot is unavailable.")
-        
+        # Combine the date and time to create a datetime object
         combined_datetime = datetime.combine(chosen_date, chosen_time)
         current_datetime = datetime.now()
         time_difference = combined_datetime - current_datetime        
-        
+        # Check if the time slot is in the past
         if time_difference.total_seconds() < 0:
             raise forms.ValidationError("Please select a future time.")
         return chosen_time
-
+    # Validate the date selected by the user and check if it is not a Monday or Tuesday
     def clean_date(self):
         chosen_date = self.cleaned_data.get('date')
 
@@ -48,6 +48,7 @@ class BookingForm(forms.ModelForm):
         return chosen_date
 
     class Meta:
+        # Define the model and fields for the form
         model = BookingForm
         fields = ['name', 'email', 'phone', 'date', 'time', 'guests']
         widgets = {

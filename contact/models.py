@@ -5,6 +5,7 @@ from django.utils import timezone
 
 # Create your models here.
 
+# Contact form model
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()

@@ -10,6 +10,7 @@
         <p class="form-text">Fill out the form below to inquire about booking the restaurant for your
             special event or reserving large tables for parties of over 8 people.</p>
 
+        <!-- Contact form -->
         <form method="post" id="{{ form.helper.form_id }}">
             {% csrf_token %}
             {{ form|crispy }}

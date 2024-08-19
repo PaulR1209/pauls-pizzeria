@@ -16,7 +16,7 @@
   </div>
   <div class="row">
     <div>
-
+      <!-- Logout form -->
       <form method="post" action="{% url 'account_logout' %}">
         {% csrf_token %}
         {% if redirect_field_value %}

@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
 from .forms import BookingForm, get_available_time_slots
 from .models import Reservation, Table
 from django.utils import timezone
@@ -93,14 +92,14 @@ def edit_reservation(request, reservation_id):
 
 
 def cancel_reservation(request, reservation_id):
-
+    # Get the reservation to cancel
     reservation = get_object_or_404(Reservation, id=reservation_id)
-
+    # Check if the user confirms the cancellation
     if request.method == "POST":
         reservation.delete()
         cancel_message = "Your reservation has been cancelled."
         return render(request, "home.html", {"cancel_message": cancel_message})
-
+    # Render the cancel reservation page
     return render(
         request, "booking/cancel_reservation.html", {"reservation": reservation}
     )

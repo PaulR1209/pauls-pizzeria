@@ -35,6 +35,7 @@
 
 <body>
     <header>
+        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg mb-3">
             <div class="container-fluid justify-content-between">
                 <a href="{% url 'home' %}"><img class="logo ms-3 d-none d-md-block" src="{% static 'images/logo.png' %}"
@@ -50,6 +51,7 @@
                         <div class="row d-none d-lg-flex">
                             <div class="col-lg-8 d-flex justify-content-center">
                                 <ul class="navbar-nav">
+                                    <!-- if user is logged in center nav -->
                                     {% if user.is_authenticated %}
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'home' %}">Home</a>
@@ -67,6 +69,7 @@
                                         <a class="nav-link" href="{% url 'reservations' %}">My Bookings</a>
                                     </li>
                                     {% else %}
+                                    <!-- if user is not logged in center nav-->
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'home' %}">Home</a>
                                     </li>
@@ -84,12 +87,14 @@
                             </div>
                             <div class="col-lg-4 d-flex justify-content-end">
                                 <ul class="navbar-nav">
+                                    <!-- if user is logged in right side -->
                                     {% if user.is_authenticated %}
                                     <li class="nav-item">
                                         <a class="btn btn-light nav-link {% if request.path == logout_url %}active{% endif %}"
                                             aria-current="page" href="{% url 'account_logout' %}">Logout</a>
                                     </li>
                                     {% else %}
+                                    <!-- if user is not logged in right side -->
                                     <li class="nav-item">
                                         <a class="btn btn-light nav-link {% if request.path == login_url %}active{% endif %}"
                                             aria-current="page" href="{% url 'account_login' %}">Login</a>
@@ -98,8 +103,9 @@
                                 </ul>
                             </div>
                         </div>
-
+                        <!-- Drop down nav -->
                         <ul class="navbar-nav d-lg-none drop-down-menu">
+                            <!--if user is logged in-->
                             {% if user.is_authenticated %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'home' %}">Home</a>
@@ -121,6 +127,7 @@
                                     aria-current="page" href="{% url 'account_logout' %}">Logout</a>
                             </li>
                             {% else %}
+                            <!-- if user is not logged in -->
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'home' %}">Home</a>
                             </li>

@@ -2,7 +2,7 @@ from django import forms
 from .models import Contact
 from phonenumber_field.formfields import PhoneNumberField
 
-
+# Contact form
 class Contact(forms.ModelForm):
     class Meta:
         model = Contact
