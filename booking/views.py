@@ -67,9 +67,13 @@ def booking(request):
 
 
 def reservations(request):
+    # Get the current user
+    user = request.user
     # Get all reservations that are in the future
     now = timezone.now()
+    # Get the reservations for the current user
     reservations = Reservation.objects.filter(
+        booking__user=user,
         booking__date__gte=now.date(),
     ).order_by("booking__date", "booking__time")
     # Render the reservations page with the reservations
@@ -80,13 +84,19 @@ def reservations(request):
 def edit_reservation(request, reservation_id):
     # Get the reservation to edit
     reservation = get_object_or_404(Reservation, id=reservation_id)
+
+    # Check if the user is authorized to edit the reservation
+    if reservation.booking.user != request.user:
+        return render(request, "home.html", {
+            "error_message": "You are not authorized to edit this reservation."}
+        )   
     # Check if the form is valid and save the booking
     if request.method == "POST":
         form = BookingForm(request.POST, instance=reservation.booking)
         if form.is_valid():
             form.save()
-            edit_message = "Your reservation has been updated."
-            return render(request, "home.html", {"edit_message": edit_message})
+            success_message = "Your reservation has been updated."
+            return render(request, "home.html", {"success_message": success_message})
     # If the form is not valid, render the form again
     else:
         form = BookingForm(instance=reservation.booking)
@@ -101,11 +111,17 @@ def edit_reservation(request, reservation_id):
 def cancel_reservation(request, reservation_id):
     # Get the reservation to cancel
     reservation = get_object_or_404(Reservation, id=reservation_id)
+
+    # Check if the user is authorized to cancel the reservation
+    if reservation.booking.user != request.user:
+        return render(request, "home.html", {
+            "error_message": "You are not authorized to cancel this reservation."}
+        )
     # Check if the user confirms the cancellation
     if request.method == "POST":
         reservation.delete()
-        cancel_message = "Your reservation has been cancelled."
-        return render(request, "home.html", {"cancel_message": cancel_message})
+        success_message = "Your reservation has been cancelled."
+        return render(request, "home.html", {"success_message": success_message})
     # Render the cancel reservation page
     return render(
         request, "booking/cancel_reservation.html", {

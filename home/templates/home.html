@@ -7,14 +7,8 @@
     {% if success_message %}
     <div class="alert alert-success text-center w-md-50">{{ success_message }}</div>
     {% endif %}
-    {% if booking_message %}
-    <div class="alert alert-success text-center w-md-50">{{ booking_message }}</div>
-    {% endif %}
-    {% if edit_message %}
-    <div class="alert alert-success text-center w-md-50">{{ edit_message }}</div>
-    {% endif %}
-    {% if cancel_message %}
-    <div class="alert alert-success text-center w-md-50">{{ cancel_message }}</div>
+    {% if error_message %}
+    <div class="alert alert-danger text-center w-md-50">{{ error_message }}</div>
     {% endif %}
     <div>
         <div class="row">
