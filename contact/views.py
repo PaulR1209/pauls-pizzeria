@@ -10,8 +10,8 @@ def contact(request):
         form = Contact(request.POST)
         if form.is_valid():
             form.save()
-            success_message = "Thank you for contacting us!"
-            " We will be in touch shortly."
+            success_message = (
+                "Thank you for contacting us! We will be in touch shortly.")
             return render(request, 'home.html', {
                 'success_message': success_message})
     # Check if the user is authenticated and pre-fill the form
