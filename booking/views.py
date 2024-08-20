@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import BookingForm, get_available_time_slots
 from .models import Reservation, Table
 from django.utils import timezone
+from django.db import transaction
 
 
-def assign_table_and_save_booking(booking):
+def assign_table_and_save_booking(booking, current_reservation=None):
     """Assign a table to the booking if available and save it."""
 
     date = booking.date
@@ -24,6 +25,10 @@ def assign_table_and_save_booking(booking):
             booking__time__lt=end_time,
             booking__end_time__gt=start_time,
         )
+
+        if current_reservation:
+            overlapping_reservations = overlapping_reservations.exclude(id=current_reservation.id)
+            
         # Check for overlapping reservations and if the table has enough capacity
         if (
             not overlapping_reservations.exists()
@@ -34,9 +39,14 @@ def assign_table_and_save_booking(booking):
 
     # If an available table is found, save the reservation
     if available_table:
-        Reservation.objects.create(booking=booking, table=available_table)
+        if current_reservation:
+            current_reservation.table = available_table
+            current_reservation.save()
+        else:
+            Reservation.objects.create(booking=booking, table=available_table)
         return available_table
-    return None
+    else:
+        raise ValueError("Sorry, we are fully booked at that time. Please try another time.")
 
 
 def booking(request):
@@ -103,21 +113,21 @@ def edit_reservation(request, reservation_id):
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user
-            booking.save()
-            # Delete the old reservation and assign a new table
-            reservation.delete()
-            available_table = assign_table_and_save_booking(booking)
-            # Check if a table was assigned
-            if available_table:
-                success_message = "Your reservation has been updated successfully!"
+            try:
+                with transaction.atomic():
+
+                    booking.save()
+                    
+                    # Assign table and save booking, passing the current reservation
+                    assign_table_and_save_booking(booking, current_reservation=reservation)
+                    
                 return render(
-                    request, "home.html", {"success_message": success_message}
+                    request,
+                    "home.html",
+                    {"success_message": "Your reservation has been updated."},
                 )
-            else:
-                form.add_error(
-                    None,
-                    "Sorry, we are fully booked at that time. Please try another time.",
-                )
+            except ValueError as e:
+                form.add_error(None, str(e))
     else:
         form = BookingForm(instance=reservation.booking)
 
