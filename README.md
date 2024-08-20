@@ -229,3 +229,28 @@ My future goals for this project is to be able to assign muliple tables to one b
 ### Other References
 
 - Code Institute walkthrough project for help setting up django and allauth
+
+## Manual Testing
+
+### Contact Form
+
+- Try to submit form without fields being filled in.
+- Test each field against their specific field types
+- Check relevent success message loads
+- Check admin page to see if form has saved
+
+### Booking Form
+
+- Try to submit form without fields being filled in.
+- Test each field against their specific field types
+- Check relevent success message loads
+- Check admin page to see if form has saved
+- See if I can book a past date and/or time
+- See if I can book less than 1 or more than 8 guests
+- Try booking for a table or time that is unavailable
+
+### View Bookings
+
+### Edit/Cancel Booking
+
+### Authentication

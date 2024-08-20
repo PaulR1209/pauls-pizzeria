@@ -59,20 +59,18 @@ def booking(request):
             booking.user = request.user
             booking.save()
 
-            available_table = assign_table_and_save_booking(booking)
-            # Check if a table was assigned
-            if available_table:
-                success_message = (
-                    "Thank you for booking with us! We look forward to seeing you!"
-                )
-                return render(
-                    request, "home.html", {"success_message": success_message}
-                )
-            else:
-                form.add_error(
-                    None,
-                    "Sorry, we are fully booked at that time. Please try another time.",
-                )
+            try:
+                available_table = assign_table_and_save_booking(booking)
+                # Check if a table was assigned
+                if available_table:
+                    success_message = (
+                        "Thank you for booking with us! We look forward to seeing you!"
+                    )
+                    return render(
+                        request, "home.html", {"success_message": success_message}
+                    )
+            except ValueError as e:
+                form.add_error(None, str(e))
     else:
         initial_data = {"email": request.user.email, "name": request.user.username}
         form = BookingForm(initial=initial_data)
