@@ -246,11 +246,50 @@ My future goals for this project is to be able to assign muliple tables to one b
 - Check relevent success message loads
 - Check admin page to see if form has saved
 - See if I can book a past date and/or time
+- See if I can book a time slot out of service time
+- See if I can book a Monday or Tuesday, as restaurant is closed then
 - See if I can book less than 1 or more than 8 guests
 - Try booking for a table or time that is unavailable
+- Check if booking has assigned to an available table
 
 ### View Bookings
 
+- Check if I can only see my bookings
+- Check if I can see anyone elses bookings
+
 ### Edit/Cancel Booking
 
+- Check if form renders with correct content
+- Check if i can change date time and number of guests
+- Check if update saves to the reservation
+- Check success message loads once updated
+- Check if I can update booking to a table or time that is unavailable
+- Check if I can access booking while logged out or logged in as another user
+- Check if cancelled booking is deleted of the database
+
 ### Authentication
+
+- When logged out, you cannot book, or see the my bookings page, or view any bookings
+- When logged in, you can book, and now have access to my bookings page, and see your own bookings
+- login/logout button changes depending on your login status
+- You will be prompted to login if you click on Book now, or access bookings by URL
+
+## Validator testing
+
+All HTML and CSS came back with no errors apart from my sign up sheet. The errors that are showing are not code that I have written, as I used allauth and followed the steps in the walkthrough Django Blog project to create this. I will be looking into why these errors have occured and how to fix them.
+
+All custom Python code is PEP8 standard.
+
+![Sign Up form errors](/readme/readme_images/html-error.png)
+
+## Deployment
+
+### Heroku Deployment Process
+
+1. Create Heroku account
+2. Initialize project to a git respository
+3. Log in to Heroku by the terminal and create app
+4. Set up database
+5. Push code to heroku
+6. Migrate database
+7. Deploy app to Heroku

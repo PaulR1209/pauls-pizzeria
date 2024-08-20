@@ -27,9 +27,11 @@ def assign_table_and_save_booking(booking, current_reservation=None):
         )
 
         if current_reservation:
-            overlapping_reservations = overlapping_reservations.exclude(id=current_reservation.id)
-            
-        # Check for overlapping reservations and if the table has enough capacity
+            overlapping_reservations = overlapping_reservations.exclude(
+                id=current_reservation.id)
+
+        # Check for overlapping reservations and
+        # if the table has enough capacity
         if (
             not overlapping_reservations.exists()
             and table.table_capacity >= booking.guests
@@ -46,7 +48,8 @@ def assign_table_and_save_booking(booking, current_reservation=None):
             Reservation.objects.create(booking=booking, table=available_table)
         return available_table
     else:
-        raise ValueError("Sorry, we are fully booked at that time. Please try another time.")
+        raise ValueError(
+            "Sorry, table unavailable for this time. Please try another time.")
 
 
 def booking(request):
@@ -64,15 +67,18 @@ def booking(request):
                 # Check if a table was assigned
                 if available_table:
                     success_message = (
-                        "Thank you for booking with us! We look forward to seeing you!"
+                        "Booking successful! We look forward to seeing you!"
                     )
                     return render(
-                        request, "home.html", {"success_message": success_message}
+                        request, "home.html", {
+                            "success_message": success_message}
                     )
             except ValueError as e:
                 form.add_error(None, str(e))
     else:
-        initial_data = {"email": request.user.email, "name": request.user.username}
+        initial_data = {
+            "email": request.user.email,
+            "name": request.user.username}
         form = BookingForm(initial=initial_data)
 
     return render(
@@ -91,7 +97,8 @@ def reservations(request):
         booking__date__gte=now.date(),
     ).order_by("booking__date", "booking__time")
 
-    return render(request, "booking/reservations.html", {"reservations": reservations})
+    return render(
+        request, "booking/reservations.html", {"reservations": reservations})
 
 
 def edit_reservation(request, reservation_id):
@@ -103,7 +110,7 @@ def edit_reservation(request, reservation_id):
         return render(
             request,
             "home.html",
-            {"error_message": "You are not authorized to update this reservation."},
+            {"error_message": "You are unable to update this reservation."},
         )
 
     if request.method == "POST":
@@ -112,13 +119,14 @@ def edit_reservation(request, reservation_id):
             booking = form.save(commit=False)
             booking.user = request.user
             try:
+                # Update the reservation
                 with transaction.atomic():
 
                     booking.save()
-                    
-                    # Assign table and save booking, passing the current reservation
-                    assign_table_and_save_booking(booking, current_reservation=reservation)
-                    
+
+                    assign_table_and_save_booking(
+                        booking, current_reservation=reservation)
+
                 return render(
                     request,
                     "home.html",
@@ -149,14 +157,16 @@ def cancel_reservation(request, reservation_id):
         return render(
             request,
             "home.html",
-            {"error_message": "You are not authorized to cancel this reservation."},
+            {"error_message": "You are unable to cancel this reservation."},
         )
 
     if request.method == "POST":
         reservation.delete()
         success_message = "Your reservation has been cancelled."
-        return render(request, "home.html", {"success_message": success_message})
+        return render(request, "home.html", {
+            "success_message": success_message})
 
     return render(
-        request, "booking/cancel_reservation.html", {"reservation": reservation}
+        request, "booking/cancel_reservation.html", {
+            "reservation": reservation}
     )
