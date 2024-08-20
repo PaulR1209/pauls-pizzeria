@@ -1,64 +1,63 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import BookingForm, get_available_time_slots
 from .models import Reservation, Table
 from django.utils import timezone
 
 
+def assign_table_and_save_booking(booking):
+    """Assign a table to the booking if available and save it."""
+    date = booking.date
+    start_time = booking.time
+    end_time = booking.end_time
+
+    available_table = None
+    for table in Table.objects.all():
+        overlapping_reservations = Reservation.objects.filter(
+            table=table,
+            booking__date=date,
+            booking__time__lt=end_time,
+            booking__end_time__gt=start_time,
+        )
+        if (
+            not overlapping_reservations.exists()
+            and table.table_capacity >= booking.guests
+        ):
+            available_table = table
+            break
+
+    if available_table:
+        Reservation.objects.create(booking=booking, table=available_table)
+        return available_table
+    return None
+
+
 def booking(request):
-    # Check if booking form is valid and save the booking
+    """Handle booking requests."""
     if request.method == "POST":
         form = BookingForm(request.POST)
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user
-            booking = form.save()
-            date = booking.date
-            start_time = booking.time
-            end_time = booking.end_time
+            booking.save()
 
-            available_table = None
-            # Check if there is a table available for the booking
-            for table in Table.objects.all():
-                overlapping_reservations = Reservation.objects.filter(
-                    table=table,
-                    booking__date=date,
-                    booking__time__lt=end_time,
-                    booking__end_time__gt=start_time,
-                )
-                # Check if there are no overlapping reservations and
-                # if the table has enough capacity
-                if (
-                    not overlapping_reservations.exists()
-                    and table.table_capacity >= booking.guests
-                ):
-                    available_table = table
-                    break
-            # If there is an available table, assign the booking to the table
+            available_table = assign_table_and_save_booking(booking)
+
             if available_table:
-                booking_assignment = Reservation(
-                    booking=booking, table=available_table)
-                booking_assignment.save()
                 success_message = (
-                    "Thank you for booking with us!"
-                    " We look forward to seeing you!"
+                    "Thank you for booking with us! We look forward to seeing you!"
                 )
                 return render(
                     request, "home.html", {"success_message": success_message}
                 )
-            # If there are no available tables, display an error message
             else:
                 form.add_error(
                     None,
-                    "Sorry, we are fully booked at that time."
-                    " Please try another time.",
+                    "Sorry, we are fully booked at that time. Please try another time.",
                 )
-    # If the form is not valid,
-    # render the form again with user email and name pre-filled
     else:
-        initial_data = {
-            'email': request.user.email, 'name': request.user.username}
+        initial_data = {"email": request.user.email, "name": request.user.username}
         form = BookingForm(initial=initial_data)
-    # Render the booking form with available time slots
+
     return render(
         request,
         "booking/booking.html",
@@ -67,63 +66,80 @@ def booking(request):
 
 
 def reservations(request):
-    # Get the current user
+    """Display the user's future reservations."""
     user = request.user
-    # Get all reservations that are in the future
     now = timezone.now()
-    # Get the reservations for the current user
     reservations = Reservation.objects.filter(
         booking__user=user,
         booking__date__gte=now.date(),
     ).order_by("booking__date", "booking__time")
-    # Render the reservations page with the reservations
-    return render(
-        request, "booking/reservations.html", {"reservations": reservations})
+
+    return render(request, "booking/reservations.html", {"reservations": reservations})
 
 
 def edit_reservation(request, reservation_id):
-    # Get the reservation to edit
+    """Allow users to update their reservation."""
     reservation = get_object_or_404(Reservation, id=reservation_id)
 
-    # Check if the user is authorized to edit the reservation
+    # Check if the user is authorized to update the reservation
     if reservation.booking.user != request.user:
-        return render(request, "home.html", {
-            "error_message": "You are not authorized to edit this reservation."}
-        )   
-    # Check if the form is valid and save the booking
+        return render(
+            request,
+            "home.html",
+            {"error_message": "You are not authorized to update this reservation."},
+        )
+
     if request.method == "POST":
         form = BookingForm(request.POST, instance=reservation.booking)
         if form.is_valid():
-            form.save()
-            success_message = "Your reservation has been updated."
-            return render(request, "home.html", {"success_message": success_message})
-    # If the form is not valid, render the form again
+            booking = form.save(commit=False)
+            booking.user = request.user
+            booking.save()
+
+            reservation.delete()
+            available_table = assign_table_and_save_booking(booking)
+
+            if available_table:
+                success_message = "Your reservation has been updated successfully!"
+                return render(
+                    request, "home.html", {"success_message": success_message}
+                )
+            else:
+                form.add_error(
+                    None,
+                    "Sorry, we are fully booked at that time. Please try another time.",
+                )
     else:
         form = BookingForm(instance=reservation.booking)
-    # Render the edit reservation form
+
     return render(
         request,
-        "booking/edit_reservation.html",
-        {"reservation": reservation, "form": form},
+        "booking/booking.html",
+        {
+            "form": form,
+            "time_slots": get_available_time_slots(),
+            "is_edit": True,
+        },
     )
 
 
 def cancel_reservation(request, reservation_id):
-    # Get the reservation to cancel
+    """Cancel a user's reservation."""
     reservation = get_object_or_404(Reservation, id=reservation_id)
 
     # Check if the user is authorized to cancel the reservation
     if reservation.booking.user != request.user:
-        return render(request, "home.html", {
-            "error_message": "You are not authorized to cancel this reservation."}
+        return render(
+            request,
+            "home.html",
+            {"error_message": "You are not authorized to cancel this reservation."},
         )
-    # Check if the user confirms the cancellation
+
     if request.method == "POST":
         reservation.delete()
         success_message = "Your reservation has been cancelled."
         return render(request, "home.html", {"success_message": success_message})
-    # Render the cancel reservation page
+
     return render(
-        request, "booking/cancel_reservation.html", {
-            "reservation": reservation}
+        request, "booking/cancel_reservation.html", {"reservation": reservation}
     )

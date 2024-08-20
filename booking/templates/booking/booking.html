@@ -6,17 +6,33 @@
 <div class="row d-flex justify-content-center">
     <div class="col-11 col-md-7 col-lg-6 col-xl-5 container p-4 p-md-5 mb-3">
 
-        <h1 class="menu-title mb-6">Book a Table</h1>
+        <h1 class="menu-title mb-6">
+            {% if is_edit %}
+            Edit Booking
+            {% else %}
+            Book a Table
+            {% endif %}
+        </h1>
+        {% if is_edit %}
+        <p class="form-text">Please update your booking form below.</p>
+        {% else %}
         <p class="form-text">Please fill out this booking form to book a table with us. Once booked, you will be able to
             view your booking in the 'My Bookings' tab.</p>
-        <p class="form-text">Please contact us <a
-            class="link" href="{{ contact_url }}"> here</a> for bookings over 8 guests.</p>
+        <p class="form-text">Please contact us <a class="link" href="{{ contact_url }}"> here</a> for bookings over 8
+            guests.</p>
+        {% endif %}
 
         <!-- Booking Form -->
         <form method="post">
             {% csrf_token %}
             {{ form|crispy }}
-            <button type="submit" class="btn btn-primary home-btn d-block mx-auto">Book</button>
+            <button type="submit" class="btn btn-primary home-btn d-block mx-auto">
+                {% if is_edit %}
+                Update
+                {% else %}
+                Book
+                {% endif %}
+            </button>
         </form>
     </div>
 </div>
