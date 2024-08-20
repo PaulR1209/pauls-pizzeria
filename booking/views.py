@@ -6,10 +6,16 @@ from django.utils import timezone
 
 def assign_table_and_save_booking(booking):
     """Assign a table to the booking if available and save it."""
+
     date = booking.date
     start_time = booking.time
     end_time = booking.end_time
 
+    # Check if the booking date is Monday or Tuesday
+    if booking.date.weekday() in [0, 1]:  # 0 is Monday, 1 is Tuesday
+        raise ValueError("Sorry, we are closed on Mondays and Tuesdays.")
+
+    # Find an available table
     available_table = None
     for table in Table.objects.all():
         overlapping_reservations = Reservation.objects.filter(
@@ -18,6 +24,7 @@ def assign_table_and_save_booking(booking):
             booking__time__lt=end_time,
             booking__end_time__gt=start_time,
         )
+        # Check for overlapping reservations and if the table has enough capacity
         if (
             not overlapping_reservations.exists()
             and table.table_capacity >= booking.guests
@@ -25,6 +32,7 @@ def assign_table_and_save_booking(booking):
             available_table = table
             break
 
+    # If an available table is found, save the reservation
     if available_table:
         Reservation.objects.create(booking=booking, table=available_table)
         return available_table
@@ -35,13 +43,14 @@ def booking(request):
     """Handle booking requests."""
     if request.method == "POST":
         form = BookingForm(request.POST)
+        # Check if the form is valid
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user
             booking.save()
 
             available_table = assign_table_and_save_booking(booking)
-
+            # Check if a table was assigned
             if available_table:
                 success_message = (
                     "Thank you for booking with us! We look forward to seeing you!"
@@ -95,10 +104,10 @@ def edit_reservation(request, reservation_id):
             booking = form.save(commit=False)
             booking.user = request.user
             booking.save()
-
+            # Delete the old reservation and assign a new table
             reservation.delete()
             available_table = assign_table_and_save_booking(booking)
-
+            # Check if a table was assigned
             if available_table:
                 success_message = "Your reservation has been updated successfully!"
                 return render(
