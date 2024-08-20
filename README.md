@@ -66,7 +66,7 @@ These are the reservations on the database. These represent the booking form ass
 
 ### My Bookings Page
 
-Once a users booking is stored as a reservation, it can be accessed by the user on this page, in order to view, edit, or cancel the booking. If you change your time or date, or number of guests, and their is not an available table, it will throw an error. The user can only view, edit, or cancel their own bookings. 
+Once a users booking is stored as a reservation, it can be accessed by the user on this page, in order to view, edit, or cancel the booking. If you change your time or date, or number of guests, and their is not an available table, it will throw an error. The user can only view, edit, or cancel their own bookings.
 
 ![My Bookings Page](/readme/readme_images/mybookings.png)
 
@@ -83,3 +83,149 @@ In order to book a table, and view, edit or cancel your bookings, you must be lo
 ![Sign in](/readme/readme_images/signin.png)
 
 ![Sign out](/readme/readme_images/signout.png)
+
+## Design Process
+
+### User Stories
+
+I created [user stories](https://github.com/users/PaulR1209/projects/2) to outline what features I wanted and needed to add into my project.
+
+### Planning
+
+From here I was able to roughly figure out what models and database schema I needed to achieve completing my user stories. I sketched out the models and design in a notepad, by hand.
+
+### Logo
+
+I created my logo on [Leonardo AI](https://app.leonardo.ai/)
+
+### Color Theme
+
+I then took the colors of my logo and decided on a theme of an Italian red #CD212A, black and white.
+
+### Background Image
+
+I then found a stock photo of a pizza for my background image to fit with the color and restaurant theme. I found this on [Pexels](https://www.pexels.com/).
+
+### Typography
+
+The font family I used for all of my typography is Roboto.
+
+## Models
+
+### Authentication
+
+I used Allauth to create the authentication. I used the Django Blog walkthrough project as a step by step guide to get this fully functioning, and I stuck with the default fields.
+
+### Contact Page
+
+I used crispy forms alongside custom CSS to build the contact form. 
+
+#### Fields:
+
+- `name`: CharField
+- `email`: EmailField
+- `phone`: PhoneNumberField
+- `subject`: CharField
+- `message`: TextField
+- `created_on`: DateTimeField(auto_now_add=True)
+
+#### Relationships:
+
+If a `user` is logged in, the `name` and `email` fields automatically fill with the users name and email.
+
+### Booking Form
+
+This model represents the booking form used to submit a booking
+
+#### Fields:
+
+- `user`: ForeignKey: User ID of the user booking
+- `name`: CharField: name of the user booking
+- `email`: EmailField: email address of the user booking
+- `phone`: Charfield: phone number of the user booking
+- `date`: DateField: date of booking
+- `time`: TimeField: time of booking
+- `end_time`: TimeField: end time of the time slot allocated
+- `guests`: IntegerField: number of guests
+- `created_on`: DateTimeField: timestamp of when the booking was created
+
+I also have a save function that combines the `time` and `date` into a datetime field, then adds 2 hours, and saves it as the `end_time`. This is so that when bookings are assigned, they will be assigned a 2 hour slot.
+
+#### Relationships:
+
+In order to access and submit a booking form, you must be logged in. So the booking is assigned to the `user` logged in.
+
+### Tables
+
+This model represents all tables in the restaurant
+
+#### Fields:
+
+- `table_number`: IntegerField(unique): the table number in the restaurant
+- `table_capacity`: IntegerField: the maximum amount of guests the table can hold
+
+### Reservation
+
+This model assigns the booking to a table.
+
+#### Fields:
+
+- `booking`: OneToOneField: grabs the data submitted in the booking form
+- `table`: ForeignKey: grabs the table data
+- `assigned_on`: DateTimeField: timestamps when the booking was assigned to the table
+
+#### Relationships:
+
+This model has a one to one relationship with the `booking form`, as one `booking form` is assigned to one `reservation`, and also has a foreign key referencing the `table`. This is not a one to one field in case multiple tables are needed for the booking.
+
+## Future Updates
+
+My future goals for this project is to be able to assign muliple tables to one booking.
+
+## Technologies
+
+### Python Modules
+
+- asgiref==3.8.1
+- crispy-bootstrap5==2024.2
+- dj-database-url==0.5.0
+- Django==4.2.14
+- django-allauth==0.57.2
+- django-crispy-forms==2.3
+- django-phonenumber-field==8.0.0
+- django-summernote==0.8.20.0
+- gunicorn==20.1.0
+- oauthlib==3.2.2
+- phonenumbers==8.13.42
+- psycopg2==2.9.9
+- PyJWT==2.9.0
+- python3-openid==3.2.0
+- requests-oauthlib==2.0.0
+- sqlparse==0.5.1
+- whitenoise==6.5.0
+
+### Django
+
+- Django as my framework
+- allauth for my authentication system
+- Jinja templating for inserting data onto pages
+
+### Deployment
+
+- [PostgreSQL from Code Institute](https://dbs.ci-dbs.net/) for database hosting.
+- [Heroku](https://dashboard.heroku.com/apps) to deploy my project
+
+### Front End
+
+- HTML
+- Bootstrap and custom CSS
+
+### Development
+
+- [GitPod](https://codeinstitute-ide.net/workspaces)/VS Code for the IDE
+- [GihHub](https://github.com/dashboard) for version conrol and repository hosting
+- [Google Fonts](https://fonts.google.com/) for typography
+
+### Other References
+
+- Code Institute walkthrough project for help setting up django and allauth
