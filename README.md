@@ -135,7 +135,7 @@ If a `user` is logged in, the `name` and `email` fields automatically fill with 
 
 ### Booking Form
 
-This model represents the booking form used to submit a booking
+This model represents the booking form used to submit a booking. I used crispy forms alongside custom CSS to build the contact form.
 
 #### Fields:
 
@@ -219,6 +219,7 @@ My future goals for this project is to be able to assign muliple tables to one b
 
 - HTML
 - Bootstrap and custom CSS
+- Crispy Forms
 
 ### Development
 
