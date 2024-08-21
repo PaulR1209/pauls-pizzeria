@@ -276,7 +276,7 @@ My future goals for this project is to be able to assign muliple tables to one b
 
 ## Validator testing
 
-All HTML and CSS came back with no errors apart from my sign up sheet. The errors that are showing are not code that I have written, as I used allauth and followed the steps in the walkthrough Django Blog project to create this. I will be looking into why these errors have occured and how to fix them.
+All HTML and CSS came back with no errors apart from my sign up sheet. The errors are framework code, from the allauth template I used, and not code I had written. I was unable to access the code to fix the errors.
 
 All custom Python code is PEP8 standard.
 
